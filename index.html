@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>typing</title>
+  </head>
+  <body>
+    <main class="app">
+      <header class="bar">
+        <div class="stat"><span id="wpm">60</span><label>wpm</label></div>
+        <div class="stat"><span id="acc">100%</span><label>accuracy</label></div>
+        <div class="stat"><span id="progress">0%</span><label>done</label></div>
+        <select id="picker" aria-label="passage"></select>
+      </header>
+
+      <section id="viewport" class="viewport">
+        <div id="text" class="text"></div>
+      </section>
+
+      <p class="hint" id="hint">start typing &mdash; the text scrolls at your pace</p>
+
+      <section id="results" class="results" hidden>
+        <h2>done</h2>
+        <div class="final">
+          <div class="stat big"><span id="final-wpm">0</span><label>wpm</label></div>
+          <div class="stat big"><span id="final-acc">0%</span><label>accuracy</label></div>
+        </div>
+        <div class="actions">
+          <button id="again" type="button">again</button>
+          <button id="download" type="button">download results.txt</button>
+        </div>
+        <ol id="history" class="history"></ol>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
