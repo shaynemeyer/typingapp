@@ -1,0 +1,118 @@
+:root {
+  --bg: #0b0f17;
+  --surface: #131a26;
+  --text: #d7e0ee;
+  --dim: #5a6b85;
+  --accent: #4da3ff;
+  --wrong: #ff5d5d;
+  --correct: #7fd0ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  width: min(900px, 90vw);
+  padding: 2rem;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+
+.app-header h1 {
+  color: var(--accent);
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.stats-live {
+  color: var(--dim);
+  font-size: 1rem;
+}
+
+.stats-live span {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.passage-viewport {
+  height: 9rem;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid #223049;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+}
+
+.passage {
+  font-size: 1.4rem;
+  line-height: 2.2rem;
+  letter-spacing: 0.02em;
+  color: var(--dim);
+}
+
+.passage .char.correct {
+  color: var(--correct);
+}
+
+.passage .char.wrong {
+  color: var(--wrong);
+  text-decoration: underline;
+}
+
+.passage .char.current {
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 2px;
+}
+
+.results {
+  margin-top: 1.5rem;
+  background: var(--surface);
+  border: 1px solid #223049;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.results.hidden {
+  display: none;
+}
+
+.results h2 {
+  color: var(--accent);
+  margin-top: 0;
+}
+
+.results button {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  margin: 0 0.4rem;
+}
+
+.results button:hover {
+  filter: brightness(1.1);
+}

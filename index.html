@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typing Trainer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="app-header">
+    <h1>Typing Trainer</h1>
+    <div class="stats-live">
+      <span id="wpm-live">60</span> wpm
+      <span id="accuracy-live">100</span>% accuracy
+    </div>
+  </header>
+
+  <div class="passage-viewport" id="passage-viewport">
+    <div class="passage" id="passage"></div>
+  </div>
+
+  <section class="results hidden" id="results">
+    <h2>Done!</h2>
+    <p><span id="wpm-final"></span> wpm &middot; <span id="accuracy-final"></span>% accuracy</p>
+    <button id="save-btn">Save results</button>
+    <button id="restart-btn">Try again</button>
+  </section>
+</main>
+
+<script id="passages" type="application/json">
+[
+  "The quick brown fox jumps over the lazy dog while the sun sets slowly behind the distant hills.",
+  "Practice makes perfect, but only if you practice the right way. Focus on accuracy before speed.",
+  "Typing well is a skill built one keystroke at a time, through steady repetition and patience."
+]
+</script>
+
+<script src="app.js"></script>
+</body>
+</html>
