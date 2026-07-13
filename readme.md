@@ -10,10 +10,11 @@ No build step, no server. Just open `index.html` in a browser.
 
 ## Files
 
-```
+```text
 index.html   markup + a few embedded passages
 style.css    dark theme, blue accents
 app.js       typing + scrolling logic
 ```
 
-See `docs/plan.md` for the design rationale.
+See `docs/plan.md` for the design rationale, and `docs/compare.md` for a
+comparison of model results building this app.
