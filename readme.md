@@ -1,20 +1,58 @@
 # Typing Trainer
 
-A single-page typing practice app. Type a passage; the text scrolls
-continuously at roughly your typing speed, starting at 60 wpm. When you
-finish, see your wpm and accuracy, and save the result to a text file.
+A typing practice app. Type a passage; the text scrolls at roughly your typing
+speed, starting at 60 wpm. Register an account and your scores are saved to the
+server, so your history follows you across browsers and devices.
 
 ## Run it
 
-No build step, no server. Just open `index.html` in a browser.
+Two services, both needed. The frontend proxies `/api` to the backend.
 
-## Files
-
-```text
-index.html   markup + a few embedded passages
-style.css    dark theme, blue accents
-app.js       typing + scrolling logic
+```sh
+cd backend  && uv run uvicorn app.main:app --reload   # http://127.0.0.1:8000
+cd frontend && npm run dev                            # http://localhost:5173
 ```
 
-See `docs/plan.md` for the design rationale, and `docs/compare.md` for a
-comparison of model results building this app.
+Open http://localhost:5173. Interactive API docs are at http://127.0.0.1:8000/docs.
+
+## Test it
+
+```sh
+cd backend  && uv run pytest      # API, auth, and passage-corpus tests
+cd frontend && npx vitest run     # scoring rules
+```
+
+## Stack
+
+| | |
+| --- | --- |
+| Backend | FastAPI, SQLModel, SQLite, managed with `uv` |
+| Frontend | React, Vite, TypeScript |
+| Auth | JWT bearer tokens, Argon2 password hashing via `pwdlib` |
+
+The database is `backend/typing.db`. Delete it to reset; the three starter
+passages reseed on the next startup.
+
+## API
+
+| Method | Path | Auth | |
+| --- | --- | --- | --- |
+| GET | `/api/health` | | liveness check |
+| POST | `/api/register` | | create an account, returns a token |
+| POST | `/api/token` | | log in, returns a token |
+| GET | `/api/passages/next` | | a random passage |
+| GET | `/api/passages` | | list passages |
+| POST | `/api/passages` | JWT | add a passage |
+| PUT | `/api/passages/{id}` | JWT | edit a passage |
+| DELETE | `/api/passages/{id}` | JWT | remove a passage |
+| POST | `/api/results` | JWT | save a score |
+| GET | `/api/users/me` | JWT | the signed-in user |
+| GET | `/api/users/me/results` | JWT | your score history |
+
+Typing works signed out. Only saving a score needs an account.
+
+## Docs
+
+- [`docs/upgrade-plan-01.md`](docs/upgrade-plan-01.md) — the current architecture and why it exists
+- [`docs/user-flow.md`](docs/user-flow.md) — states and interaction rules
+- [`docs/01-plan.md`](docs/01-plan.md) — the original vanilla three-file version
