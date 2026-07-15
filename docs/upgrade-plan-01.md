@@ -10,7 +10,7 @@ HTML), with passages embedded as JSON in `index.html` and scores in
 `localStorage`. It works, and it is deliberately minimal.
 
 **Why change it.** `localStorage` is per-browser. Scores die when you switch
-device or clear storage, and there is no concept of a *user*. We want
+device or clear storage, and there is no concept of a _user_. We want
 registration and a cross-session results history — and that is the one thing a
 static page genuinely cannot do. The backend is justified by **multi-user
 persistence**, not by the typing app itself. The typing and scoring logic needs
@@ -21,14 +21,14 @@ no server and ports to the client largely unchanged.
 Versions checked against current documentation rather than assumed. Local
 toolchain: Python 3.14.2, Node 24.15.0, uv 0.11.7.
 
-| Tool | Version | Note |
-| --- | --- | --- |
-| FastAPI | 0.139.0 | `lifespan` context manager; `@app.on_event` is deprecated ([docs](https://fastapi.tiangolo.com/advanced/events/)) |
-| Pydantic | 2.13.4 | `model_config = ConfigDict(from_attributes=True)`; `orm_mode` is gone |
-| SQLModel | 0.0.39 | Actively maintained, Pydantic v2 compatible ([docs](https://sqlmodel.tiangolo.com/)) |
-| uv | 0.11.7 | `uv init`, `uv add`, `uv run` ([docs](https://docs.astral.sh/uv/)) |
-| Vite | 8.1 | `npm create vite@latest frontend -- --template react-ts` ([docs](https://vite.dev/guide/)) |
-| pwdlib[argon2] | 0.3.0 | Password hashing. **Not passlib** — passlib is unmaintained and breaks on recent Python. The current FastAPI tutorial uses pwdlib with Argon2 ([docs](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/)) |
+| Tool           | Version | Note                                                                                                                                                                                                               |
+| -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| FastAPI        | 0.139.0 | `lifespan` context manager; `@app.on_event` is deprecated ([docs](https://fastapi.tiangolo.com/advanced/events/))                                                                                                  |
+| Pydantic       | 2.13.4  | `model_config = ConfigDict(from_attributes=True)`; `orm_mode` is gone                                                                                                                                              |
+| SQLModel       | 0.0.39  | Actively maintained, Pydantic v2 compatible ([docs](https://sqlmodel.tiangolo.com/))                                                                                                                               |
+| uv             | 0.11.7  | `uv init`, `uv add`, `uv run` ([docs](https://docs.astral.sh/uv/))                                                                                                                                                 |
+| Vite           | 8.1     | `npm create vite@latest frontend -- --template react-ts` ([docs](https://vite.dev/guide/))                                                                                                                         |
+| pwdlib[argon2] | 0.3.0   | Password hashing. **Not passlib** — passlib is unmaintained and breaks on recent Python. The current FastAPI tutorial uses pwdlib with Argon2 ([docs](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/)) |
 
 ## How this plan is executed
 
@@ -80,17 +80,17 @@ The three original passages (95, 95, and 93 characters) are seeded verbatim.
 
 ## API
 
-| Method | Path | Auth | Purpose |
-| --- | --- | --- | --- |
-| POST | `/api/register` | — | create user, return JWT |
-| POST | `/api/token` | — | log in, return JWT |
-| GET | `/api/passages/next` | — | random passage |
-| GET | `/api/passages` | — | list |
-| POST | `/api/passages` | JWT | create |
-| PUT | `/api/passages/{id}` | JWT | update |
-| DELETE | `/api/passages/{id}` | JWT | delete |
-| POST | `/api/results` | JWT | save a score |
-| GET | `/api/users/me/results` | JWT | that user's history |
+| Method | Path                    | Auth | Purpose                 |
+| ------ | ----------------------- | ---- | ----------------------- |
+| POST   | `/api/register`         | —    | create user, return JWT |
+| POST   | `/api/token`            | —    | log in, return JWT      |
+| GET    | `/api/passages/next`    | —    | random passage          |
+| GET    | `/api/passages`         | —    | list                    |
+| POST   | `/api/passages`         | JWT  | create                  |
+| PUT    | `/api/passages/{id}`    | JWT  | update                  |
+| DELETE | `/api/passages/{id}`    | JWT  | delete                  |
+| POST   | `/api/results`          | JWT  | save a score            |
+| GET    | `/api/users/me/results` | JWT  | that user's history     |
 
 Auth is `OAuth2PasswordBearer` plus JWT, hashing via pwdlib's
 `PasswordHash.recommended()` (Argon2). Scores are computed client-side and
@@ -110,7 +110,7 @@ The rules in `app.js` are correct and load-bearing. They move into
 - Stats seed at 60 wpm and 100%.
 - Scrolling is an independent `requestAnimationFrame` loop driven by current wpm.
 
-React changes *where* character state lives. Today the `<span>` elements are the
+React changes _where_ character state lives. Today the `<span>` elements are the
 state, carrying `current` / `correct` / `wrong` classes. In React that becomes a
 `status[]` array the render maps over. This is the one genuine rewrite;
 everything else is mechanical.

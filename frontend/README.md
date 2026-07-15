@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# Typing Trainer — frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite + TypeScript client for the Typing Trainer. It fetches passages
+from the API, runs the typing engine, and shows a signed-in user's score
+history. See the [root README](../readme.md) for the full stack and API.
 
-Currently, two official plugins are available:
+## Develop
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm run dev       # dev server at http://localhost:5173
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+`/api` is proxied to the backend at `http://127.0.0.1:8000` (see
+`vite.config.ts`), so the browser sees one origin and no CORS setup is needed.
+**The backend must be running** or passages will not load.
+
+```sh
+npm run build     # type-check (tsc -b) and build to dist/
+npm run preview   # serve the production build
+npm run lint      # oxlint
+npx vitest run    # scoring tests
+```
+
+## Structure
+
+| Path | Role |
+| --- | --- |
+| `src/hooks/useTyping.ts` | the typing engine — keydown handling, character state, live stats, and `useAutoScroll` |
+| `src/lib/scoring.ts` | pure wpm and accuracy functions, ported from the vanilla `app.js` |
+| `src/api/client.ts` | typed fetch wrapper; attaches the JWT and stores it in `localStorage` |
+| `src/App.tsx` | ties it together: fetch a passage, gate saving behind auth, show history |
+| `src/components/` | `Passage`, `Auth`, `History` |
+
+## Things worth knowing
+
+- **Character state is a `status[]` array**, not DOM classes. In the vanilla app
+  the `<span>` elements *were* the state; `Passage.tsx` now maps the array to
+  `correct` / `wrong` / `current` classes.
+- **Backspace does not refund accuracy.** `typed` and `wrong` only ever
+  increase, so correcting a mistake restores the character's appearance but not
+  the lost accuracy. This is deliberate — do not "fix" it.
+- **`useAutoScroll` reads wpm through a ref.** A plain closure would capture the
+  wpm from its render and freeze scrolling at 60. It also hardcodes CSS
+  assumptions (`2.2 * 16` line height), so changing `.passage` typography in
+  `index.css` desyncs the scroll rate.
+- **Scrolling is inert on the current passages** — they fit inside the viewport,
+  so there is nothing to scroll. Longer passages would scroll.
+- **Typing works signed out.** Only *saving* a score requires an account.
