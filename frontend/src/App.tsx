@@ -10,6 +10,7 @@ import {
   type Result,
 } from './api/client';
 import { Auth } from './components/Auth';
+import { Calendar } from './components/Calendar';
 import { History } from './components/History';
 import { Passage } from './components/Passage';
 import { useAutoScroll, useTyping } from './hooks/useTyping';
@@ -115,7 +116,14 @@ export default function App() {
         </section>
       )}
 
-      {username ? <History results={results} /> : <Auth onAuthenticated={loadUser} />}
+      {username ? (
+        <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem' }}>
+          <History results={results} />
+          <Calendar results={results} />
+        </div>
+      ) : (
+        <Auth onAuthenticated={loadUser} />
+      )}
     </main>
   );
 }

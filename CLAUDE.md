@@ -26,6 +26,10 @@ cd backend  && uv run pytest      # 54 tests
 cd frontend && npx vitest run     # 8 tests
 ```
 
+Run a single test: `uv run pytest tests/test_results_api.py::test_name` (backend) or `npx vitest run -t "test name"` (frontend).
+
+Lint the frontend: `cd frontend && npm run lint` (oxlint).
+
 ## Architecture
 
 **Backend** — FastAPI + SQLModel + SQLite, managed with `uv`. Three tables: `User`, `Passage`, `Result`. Nine endpoints across `app/routers/` (auth, passages, results).
